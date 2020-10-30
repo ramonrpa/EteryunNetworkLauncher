@@ -6,8 +6,6 @@
 
 [<p align="center"><img src="https://img.shields.io/travis/ramonrpa/EteryunNetworkLauncher.svg?style=for-the-badge" alt="travis">](https://travis-ci.org/github/ramonrpa/EteryunNetworkLauncher) [<img src="https://img.shields.io/github/downloads/ramonrpa/EteryunNetworkLauncher/total.svg?style=for-the-badge" alt="downloads">](https://github.com/ramonrpa/EteryunNetworkLauncher/releases) <img src="https://forthebadge.com/images/badges/winter-is-coming.svg"  height="28px" alt="stark"></p>
 
-<p align="center">Join modded servers without worrying about installing Java, Forge, or other mods. We'll handle that for you.</p>
-
 ![Screenshot 1](https://i.imgur.com/rWeIFNX.png)
 ![Screenshot 2](https://i.imgur.com/RLP86hU.png)
 
@@ -32,8 +30,6 @@
 
 This is not an exhaustive list. Download and install the launcher to gauge all it can do!
 
-#### Need Help? [Check the wiki.][wiki]
-
 #### Like the project? Leave a ⭐ star on the repository!
 
 ## Downloads
@@ -53,7 +49,7 @@ If you download from the [Releases](https://github.com/ramonrpa/EteryunNetworkLa
 
 | Platform | File |
 | -------- | ---- |
-| Windows x64 | `helioslauncher-setup-VERSION.exe` |
+| Windows x64 | `Eteryun.Network.Launcher-setup-VERSION.exe` |
 
 ## Console
 
@@ -86,7 +82,7 @@ If you want to export the console output, simply right click anywhere on the con
 
 ```console
 > git clone https://github.com/ramonrpa/EteryunNetworkLauncher.git
-> cd HeliosLauncher
+> cd EteryunNetworkLauncher
 > npm install
 ```
 
@@ -188,18 +184,6 @@ We reserve the right to update these conditions at any time, please check back p
 
 ---
 
-## Resources
-
-* [Wiki][wiki]
-* [Nebula (Create Distribution.json)][nebula]
-* [v2 Rewrite Branch (WIP)][v2branch]
-
-The best way to contact the developers is on Discord.
-
-[![discord](https://discordapp.com/api/guilds/211524927831015424/embed.png?style=banner3)][discord]
-
----
-
 ### See you ingame.
 
 
@@ -209,6 +193,5 @@ The best way to contact the developers is on Discord.
 [rendererprocess]: https://electronjs.org/docs/tutorial/application-architecture#main-and-renderer-processes 'Renderer Process'
 [chromedebugger]: https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome 'Debugger for Chrome'
 [discord]: https://discord.gg/zNWUXdt 'Discord'
-[wiki]: https://github.com/ramonrpa/EteryunNetworkLauncher/wiki 'wiki'
 [nebula]: https://github.com/dscalzi/Nebula 'dscalzi/Nebula'
 [v2branch]: https://github.com/ramonrpa/EteryunNetworkLauncher/tree/ts-refactor 'v2 branch'
