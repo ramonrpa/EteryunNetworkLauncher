@@ -1,0 +1,49 @@
+{
+    "html": {
+        "avatarOverlay": "Editar"
+    },
+    "js": {
+        "login": {
+            "error": {
+                "invalidValue": "* Valor Inválido",
+                "requiredValue": "* Requerido",
+                "userMigrated": {
+                    "title": "Erro durante login:<br>Invalid Credentials",
+                    "desc": "Tentou logar com uma conta Migrada. Tente usando o email da conta como o Nickname."
+                },
+                "invalidCredentials": {
+                    "title": "Erro durante o login:<br>Invalid Credentials",
+                    "desc": "Email ou senha Incorreta. Tente novamente. Usuários sem Premium, deixe sua senha VAZIA !"
+                },
+                "rateLimit": {
+                    "title": "Erro durante o Login:<br>Too Many Attempts",
+                    "desc": "Muitos acessos nessa conta recentemente. Tenta novamente mais tarde."
+                },
+                "noInternet": {
+                    "title": "Erro durante o Login:<br>No Internet Connection",
+                    "desc": "Sem conexão na Internet. Conecte-se e tente novamente."
+                },
+                "authDown": {
+                    "title": "Erro Durante o Login:<br>Authentication Server Offline",
+                    "desc": "Mojang offline ou sem alcance. Aguarte um pouco e tente novamente. Cheque os status aqui: <a href=\"https://help.mojang.com/\">Mojang's help portal</a>."
+                },
+                "notPaid": {
+                    "title": "Erro Durante o Login:<br>Game Not Purchased",
+                    "desc": "The account you are trying to login with has not purchased a copy of Minecraft.<br>You may purchase a copy on <a href=\"https://minecraft.net/\">Minecraft.net</a>"
+                },
+                "unknown": {
+                    "title": "Erro Durante o Login:<br>Unknown Error"
+                }
+            },
+            "login": "LOGIN",
+            "loggingIn": "LOGANDO",
+            "success": "SUCESSO",
+            "tryAgain": "Tentar Novamente"
+        },
+        "landing": {
+            "launch": {
+                "pleaseWait": "Aguarde.."
+            }
+        }
+    }
+}
