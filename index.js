@@ -39,6 +39,12 @@ function initAutoUpdater(event, data) {
         console.log(info)
         event.sender.send('autoUpdateNotification', 'update-not-available', info)
     })
+
+    autoUpdater.on('download-progress', (progressObj) => {
+        console.log(progressObj)
+        event.sender.send('download-progress', progressObj.percent)
+    })
+
     autoUpdater.on('checking-for-update', () => {
         event.sender.send('autoUpdateNotification', 'checking-for-update')
     })
