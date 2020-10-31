@@ -1,29 +1,29 @@
 // Requirements
-const { app, BrowserWindow, ipcMain, Menu } = require('electron')
-const autoUpdater                   = require('electron-updater').autoUpdater
-const ejse                          = require('ejs-electron')
-const fs                            = require('fs')
-const isDev                         = require('./app/assets/js/isdev')
-const path                          = require('path')
-const semver                        = require('semver')
-const url                           = require('url')
+const { app, BrowserWindow, ipcMain, Menu, Tray, dialog } = require('electron')
+const autoUpdater = require('electron-updater').autoUpdater
+const ejse = require('ejs-electron')
+const fs = require('fs')
+const isDev = require('./app/assets/js/isdev')
+const path = require('path')
+const semver = require('semver')
+const url = require('url')
 let settings = require('./app/config/settings.json')
 
 // Setup auto updater.
 function initAutoUpdater(event, data) {
 
-    if(data){
+    if (data) {
         autoUpdater.allowPrerelease = true
     } else {
         // Defaults to true if application version contains prerelease components (e.g. 0.12.1-alpha.1)
         // autoUpdater.allowPrerelease = true
     }
-    
-    if(isDev){
+
+    if (isDev) {
         autoUpdater.autoInstallOnAppQuit = false
         autoUpdater.updateConfigPath = path.join(__dirname, 'dev-app-update.yml')
     }
-    if(process.platform === 'darwin'){
+    if (process.platform === 'darwin') {
         autoUpdater.autoDownload = false
     }
 
@@ -45,12 +45,12 @@ function initAutoUpdater(event, data) {
     autoUpdater.on('error', (err) => {
         console.log(error)
         event.sender.send('autoUpdateNotification', 'realerror', err)
-    }) 
+    })
 }
 
 // Open channel to listen for update actions.
 ipcMain.on('autoUpdateAction', (event, arg, data) => {
-    switch(arg){
+    switch (arg) {
         case 'initAutoUpdater':
             console.log('Initializing auto updater.')
             initAutoUpdater(event, data)
@@ -63,9 +63,9 @@ ipcMain.on('autoUpdateAction', (event, arg, data) => {
                 })
             break
         case 'allowPrereleaseChange':
-            if(!data){
+            if (!data) {
                 const preRelComp = semver.prerelease(app.getVersion())
-                if(preRelComp != null && preRelComp.length > 0){
+                if (preRelComp != null && preRelComp.length > 0) {
                     autoUpdater.allowPrerelease = true
                 } else {
                     autoUpdater.allowPrerelease = data
@@ -118,7 +118,7 @@ function createWindow() {
 
     ejse.data('bkid', Math.floor((Math.random() * fs.readdirSync(path.join(__dirname, 'app', 'assets', 'images', 'backgrounds')).length)))
 
-    Object.keys(settings).forEach(function(key) {
+    Object.keys(settings).forEach(function (key) {
         ejse.data(key, settings[key])
     })
 
@@ -139,11 +139,42 @@ function createWindow() {
     win.on('closed', () => {
         win = null
     })
+
+    // Hide Windows and Create Tray
+    let tray = null
+    ipcMain.on('createTray', (event, res) => {
+        win.hide()
+        tray = createTray(win)
+    })
+}
+
+function createTray(mainWindow) {
+    let appIcon = new Tray(getPlatformIcon('SealCircle'))
+    const contextMenu = Menu.buildFromTemplate([
+        {
+            label: 'Mostrar', click: function () {
+                mainWindow.show()
+            }
+        },
+        {
+            label: 'Sair', click: function () {
+                app.isQuiting = true
+                app.quit()
+            }
+        }
+    ])
+
+    appIcon.on('double-click', function (event) {
+        mainWindow.show()
+    })
+    appIcon.setToolTip('Tray Tutorial')
+    appIcon.setContextMenu(contextMenu)
+    return appIcon
 }
 
 function createMenu() {
-    
-    if(process.platform === 'darwin') {
+
+    if (process.platform === 'darwin') {
 
         // Extend default included application menu to continue support for quit keyboard shortcut
         let applicationSubMenu = {
@@ -205,9 +236,9 @@ function createMenu() {
 
 }
 
-function getPlatformIcon(filename){
+function getPlatformIcon(filename) {
     let ext
-    switch(process.platform) {
+    switch (process.platform) {
         case 'win32':
             ext = 'ico'
             break
