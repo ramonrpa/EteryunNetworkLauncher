@@ -122,6 +122,16 @@ document.getElementById('avatarOverlay').onclick = (e) => {
     })
 }
 
+function loadSkin(url) {
+    return new Promise((resolve, reject) => {
+        skinViewer.loadSkin(
+            url,
+            'auto-detec')
+            .then(() => resolve())
+            .catch(e => reject())
+    })
+}
+
 // Bind selected account
 function updateSelectedAccount(authUser) {
     let username = 'No Account Selected'
@@ -130,7 +140,14 @@ function updateSelectedAccount(authUser) {
             username = authUser.displayName
         }
         if (authUser.uuid != null) {
-            document.getElementById('avatarContainer').style.backgroundImage = `url('https://crafatar.com/renders/body/${authUser.uuid}')`
+            Mojang.getSkinURL(authUser.uuid).then(url => {
+                exp.draw_model('1', url, 1, true, true, function (error, data) {
+                    if (!error)
+                        document.getElementById('avatarContainer').style.backgroundImage = `url('${data}')`
+                    else
+                        document.getElementById('avatarContainer').style.backgroundImage = `url('https://crafatar.com/renders/body/${authUser.uuid}')`
+                })
+            }).catch(() => document.getElementById('avatarContainer').style.backgroundImage = `url('https://crafatar.com/renders/body/${authUser.uuid}')`)
         }
     }
     user_text.innerHTML = username
@@ -161,7 +178,7 @@ server_selection_button.onclick = (e) => {
 const refreshMojangStatuses = async function () {
     loggerLanding.log('Refreshing Mojang Statuses..')
 
-    
+
     let status = 'grey'
     let tooltipEssentialHTML = ''
     let tooltipNonEssentialHTML = ''

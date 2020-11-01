@@ -1,5 +1,5 @@
 // Requirements
-const { app, BrowserWindow, ipcMain, Menu, Tray, dialog } = require('electron')
+const { app, BrowserWindow, ipcMain, Menu, Tray } = require('electron')
 const autoUpdater = require('electron-updater').autoUpdater
 const ejse = require('ejs-electron')
 const fs = require('fs')

@@ -27,9 +27,50 @@
             </div>
         </div>
     </div>
+    <div id="skinUploadContent" style="display: none;">
+        <span id="skinUploadHeader">Altere sua Skin</span>
+        <div class="row">
+            <div class="col">
+                <img id="skinUploadImage" width="140px" src="./assets/images/skins/steve.png">
+            </div>
+            <div id="skinUploadList" class="col">
+                <div id="skinUploadModelContainer">
+                    <div id="skinUploadModelTitle">Modelo da Skin</div>
+                    <div id="skinUploadModelContent">
+                        <div id="classicRadio">
+                            <input type="radio" id="classicModel" name="model" value="classic" checked>
+                            <label for="classicModel">Clássico</label><br>
+                        </div>
+                        <div id="slimRadio">
+                            <input type="radio" id="slimModel" name="model" value="slim">
+                            <label for="slimModel">Fino</label><br>
+                        </div>
+                    </div>
+                </div>
+                <div id="skinUploadFileContainer">
+                    <div id="skinUploadFileTitle">Arquivo da Skin</div>
+                    <div id="skinUploadFileContent">
+                        <input id="skinUploadFileInput" type="file" accept="image/x-png" style="display: none;">
+                        <button id="skinUploadFileSelect">Procurar</button></br>
+                        <span id="skinUploadFileValidate">As skins devem ser arquivos PNG de 64x64 ou 64x32</span>
+                    </div>
+                </div>
+                <input id="skinUploadAccessToken" value="" style="display: none;">
+                <input id="skinUploadUUID" value="" style="display: none;">
+            </div>
+        </div>
+        <div id="skinUploadActions">
+            <span id="skinUploadCallBackText"></span>
+            <button id="skinUploadConfirm" class="overlayKeybindEnter" disabled>Enviar</button>
+            <div id="skinUploadCancelWrapper">
+                <button id="skinUploadCancel" class="overlayKeybindEsc">Cancelar</button>
+            </div>
+        </div>
+    </div>
     <div id="overlayContent">
         <span id="overlayTitle">Lorem Ipsum:<br>Finis Illud</span>
-        <span id="overlayDesc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud..</span>
+        <span id="overlayDesc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+            ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud..</span>
         <div id="overlayActionContainer">
             <button id="overlayAcknowledge" class="overlayKeybindEnter">Conare Iterum</button>
             <div id="overlayDismissWrapper">

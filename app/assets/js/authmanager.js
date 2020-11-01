@@ -12,8 +12,8 @@
 const ConfigManager = require('./configmanager')
 const LoggerUtil = require('./loggerutil')
 const Mojang = require('./mojang')
-const {v3: uuidv3}  = require('uuid')
-const {machineIdSync} = require('node-machine-id')
+const { v3: uuidv3 } = require('uuid')
+const { machineIdSync } = require('node-machine-id')
 const logger = LoggerUtil('%c[AuthManager]', 'color: #a02d2a; font-weight: bold')
 const loggerSuccess = LoggerUtil('%c[AuthManager]', 'color: #209b07; font-weight: bold')
 
@@ -90,24 +90,28 @@ exports.removeAccount = async function (uuid) {
  */
 exports.validateSelected = async function () {
     const current = ConfigManager.getSelectedAccount()
-    const isValid = await Mojang.validate(current.accessToken, ConfigManager.getClientToken())
-    if (!isValid) {
-        try {
-            const session = await Mojang.refresh(current.accessToken, ConfigManager.getClientToken())
-            ConfigManager.updateAuthAccount(current.uuid, session.accessToken)
-            ConfigManager.save()
-        } catch (err) {
-            logger.debug('Error while validating selected profile:', err)
-            if (err && err.error === 'ForbiddenOperationException') {
-                // What do we do?
-            }
-            logger.log('Account access token is invalid.')
-            return false
-        }
-        loggerSuccess.log('Account access token validated.')
+    if (current.accessToken == 'ImCrakedLOL') {
         return true
     } else {
-        loggerSuccess.log('Account access token validated.')
-        return true
+        const isValid = await Mojang.validate(current.accessToken, ConfigManager.getClientToken())
+        if (!isValid) {
+            try {
+                const session = await Mojang.refresh(current.accessToken, ConfigManager.getClientToken())
+                ConfigManager.updateAuthAccount(current.uuid, session.accessToken)
+                ConfigManager.save()
+            } catch (err) {
+                logger.debug('Error while validating selected profile:', err)
+                if (err && err.error === 'ForbiddenOperationException') {
+                    // What do we do?
+                }
+                logger.log('Account access token is invalid.')
+                return false
+            }
+            loggerSuccess.log('Account access token validated.')
+            return true
+        } else {
+            loggerSuccess.log('Account access token validated.')
+            return true
+        }
     }
 }

@@ -347,6 +347,19 @@ function bindAuthAccountSelect() {
     })
 }
 
+function bindSkinChanger() {
+    Array.from(document.getElementsByClassName('settingsAuthAccountSkin')).map((val) => {
+        val.onclick = (e) => {
+            const parent = val.closest('.settingsAuthAccount')
+            const accessToken = parent.getAttribute('accessToken')
+            const uuid = parent.getAttribute('uuid')
+            document.getElementById('skinUploadAccessToken').value = accessToken
+            document.getElementById('skinUploadUUID').value = uuid
+            toggleOverlay(true, true, 'skinUploadContent')
+        }
+    })
+}
+
 /**
  * Bind functionality for the log out button. If the logged out account was
  * the selected account, another account will be selected and the UI will
@@ -430,7 +443,7 @@ const settingsCurrentAccounts = document.getElementById('settingsCurrentAccounts
 /**
  * Add auth account elements for each one stored in the authentication database.
  */
-function populateAuthAccounts() {
+async function populateAuthAccounts() {
     const authAccounts = ConfigManager.getAuthAccounts()
     const authKeys = Object.keys(authAccounts)
     if (authKeys.length === 0) {
@@ -440,43 +453,66 @@ function populateAuthAccounts() {
 
     let authAccountStr = ''
 
-    authKeys.map((val) => {
+    await asyncForEach(authKeys, async val => {
         const acc = authAccounts[val]
-        authAccountStr += `<div class="settingsAuthAccount" uuid="${acc.uuid}">
-            <div class="settingsAuthAccountLeft">
-                <img class="settingsAuthAccountImage" alt="${acc.displayName}" src="https://crafatar.com/renders/body/${acc.uuid}?scale=3&default=MHF_Steve&overlay">
-            </div>
-            <div class="settingsAuthAccountRight">
-                <div class="settingsAuthAccountDetails">
-                    <div class="settingsAuthAccountDetailPane">
-                        <div class="settingsAuthAccountDetailTitle">Nome de Usuário</div>
-                        <div class="settingsAuthAccountDetailValue">${acc.displayName}</div>
-                    </div>
-                    <div class="settingsAuthAccountDetailPane">
-                        <div class="settingsAuthAccountDetailTitle">UUID</div>
-                        <div class="settingsAuthAccountDetailValue">${acc.uuid}</div>
-                    </div>
+        let url = await getAccountSkin(acc)
+        //let url = `https://crafatar.com/renders/body/${acc.uuid}?scale=3&default=MHF_Steve&overlay`
+        authAccountStr += `<div class="settingsAuthAccount" uuid="${acc.uuid}" accessToken="${acc.accessToken}">
+        <div class="settingsAuthAccountLeft">
+            <img class="settingsAuthAccountImage" alt="${acc.displayName}" src="${url}">
+        </div>
+        <div class="settingsAuthAccountRight">
+            <div class="settingsAuthAccountDetails">
+                <div class="settingsAuthAccountDetailPane">
+                    <div class="settingsAuthAccountDetailTitle">Nome de Usuário</div>
+                    <div class="settingsAuthAccountDetailValue">${acc.displayName}</div>
                 </div>
-                <div class="settingsAuthAccountActions">
-                    <button class="settingsAuthAccountSelect" ${selectedUUID === acc.uuid ? 'selected>Conta Selecionada &#10004;' : '>Selecionar a conta'}</button>
-                    <div class="settingsAuthAccountWrapper">
-                        <button class="settingsAuthAccountLogOut">Sair</button>
-                    </div>
+                <div class="settingsAuthAccountDetailPane">
+                    <div class="settingsAuthAccountDetailTitle">UUID</div>
+                    <div class="settingsAuthAccountDetailValue">${acc.uuid}</div>
                 </div>
             </div>
-        </div>`
+            <div class="settingsAuthAccountActions">
+                <button class="settingsAuthAccountSelect" ${selectedUUID === acc.uuid ? 'selected>Conta Selecionada &#10004;' : '>Selecionar a conta'}</button>
+                <div class="settingsAuthAccountWrapper">
+                    ${acc.accessToken != 'ImCrakedLOL' ? '<button class="settingsAuthAccountSkin">Mudar Skin</button>' : ''}
+                    <button class="settingsAuthAccountLogOut">Sair</button>
+                </div>
+            </div>
+        </div>
+    </div>`
     })
-
     settingsCurrentAccounts.innerHTML = authAccountStr
+}
+
+async function asyncForEach(array, callback) {
+    for (let index = 0; index < array.length; index++) {
+        await callback(array[index], index, array)
+    }
+}
+
+function getAccountSkin(acc) {
+    return new Promise((resolve, reject) => {
+        let urlIMG = `https://crafatar.com/renders/body/${acc.uuid}?scale=3&default=MHF_Steve&overlay`
+        Mojang.getSkinURL(acc.uuid).then(url => {
+            exp.draw_model(Math.floor(Math.random() * 1000), url, 3, true, true, function (error, data) {
+                if (!error)
+                    resolve(data)
+                else
+                    resolve(urlIMG)
+            })
+        }).catch(() => { resolve(urlIMG) })
+    })
 }
 
 /**
  * Prepare the accounts tab for display.
  */
-function prepareAccountsTab() {
-    populateAuthAccounts()
+async function prepareAccountsTab() {
+    await populateAuthAccounts()
     bindAuthAccountSelect()
     bindAuthAccountLogOut()
+    bindSkinChanger()
 }
 
 /**
@@ -1291,7 +1327,7 @@ function settingsUpdateButtonStatus(text, disabled = false, handler = null) {
 /**
  * Update progress bar 
  **/
-function settingsUpdateProgressBar(progress){
+function settingsUpdateProgressBar(progress) {
     progressBarInner.style.width = progress + '%'
 }
 
