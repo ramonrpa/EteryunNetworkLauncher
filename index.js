@@ -8,6 +8,7 @@ const path = require('path')
 const semver = require('semver')
 const url = require('url')
 let settings = require('./app/config/settings.json')
+const { event } = require('jquery')
 
 // Setup auto updater.
 function initAutoUpdater(event, data) {
@@ -146,6 +147,11 @@ function createWindow() {
         win = null
     })
 
+    ipcMain.on('closeApp', (event, res) => {
+        app.isQuiting = true
+        app.quit()
+    })
+
     // Hide Windows and Create Tray
     let tray = null
     ipcMain.on('createTray', (event, res) => {
@@ -173,7 +179,7 @@ function createTray(mainWindow) {
     appIcon.on('double-click', function (event) {
         mainWindow.show()
     })
-    appIcon.setToolTip('Tray Tutorial')
+    appIcon.setToolTip('Eteryun Network')
     appIcon.setContextMenu(contextMenu)
     return appIcon
 }

@@ -21,7 +21,7 @@ builder.build({
         appId: 'eteryunnetworklauncher',
         productName: 'Eteryun Network Launcher',
         artifactName: '${productName}-setup-${version}.${ext}',
-        copyright: 'Copyright © 2018-2020 Daniel Scalzi',
+        copyright: 'Copyright © 2020-2020 Ramon Rodrigues',
         directories: {
             buildResources: 'build',
             output: 'dist'

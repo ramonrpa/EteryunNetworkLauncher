@@ -682,7 +682,7 @@ function dlAsync(login = true) {
 
                 const onLoadComplete = () => {
                     toggleLaunchArea(false)
-                    ipcRenderer.send('createTray')
+                    ipcRenderer.send('closeApp')
                     if (hasRPC) {
                         DiscordWrapper.updateDetails('Loading game..')
                     }
