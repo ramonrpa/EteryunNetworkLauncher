@@ -39,10 +39,6 @@ webFrame.setVisualZoomLevelLimits(1, 1)
 let updateCheckListener
 if(!isDev){
 
-    ipcRenderer.on('download-progress', (event, arg) => {
-        settingsUpdateProgressBar(arg)
-    })
-
     ipcRenderer.on('autoUpdateNotification', (event, arg, info) => {
         switch(arg){
             case 'checking-for-update':

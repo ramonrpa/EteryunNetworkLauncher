@@ -61,6 +61,7 @@ function getCurrentView() {
     return currentView
 }
 
+
 function showMainUI(data) {
 
     if (!isDev) {
@@ -73,7 +74,7 @@ function showMainUI(data) {
     refreshServerStatus()
     setTimeout(() => {
         document.getElementById('frameBar').style.backgroundColor = 'rgba(0, 0, 0, 0.5)'
-        
+
         let count = 1
 
         document.body.style.backgroundImage = `url('assets/images/backgrounds/${count}.png')`
@@ -117,7 +118,17 @@ function showMainUI(data) {
 
     }, 750)
     // Disable tabbing to the news container.
-    
+
+    if (ConfigManager.getPlay()) {
+        getAudioUrl('hBkcwy-iWt8').then(url => {
+            const youtubeAudio = document.getElementById('youtube')
+            youtubeAudio.src = url
+            youtubeAudio.volume = (ConfigManager.getVolume() / 100)
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+
     initNews().then(() => {
         $('#newsContainer *').attr('tabindex', '-1')
     })
@@ -149,7 +160,7 @@ function showFatalStartupError() {
 function onDistroRefresh(data) {
     updateSelectedServer(data.getServer(ConfigManager.getSelectedServer()))
     refreshServerStatus()
-    initNews() 
+    initNews()
     syncModConfigurations(data)
 }
 

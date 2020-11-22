@@ -12,6 +12,7 @@
                     <button class="settingsNavItem" rSc="settingsTabMods">Versões</button>
                     <button class="settingsNavItem" rSc="settingsTabJava">Java</button>
                     <button class="settingsNavItem" rSc="settingsTabLauncher">Launcher</button>
+                    <button class="settingsNavItem" rSc="settingsTabMusic">Musica</button>
                     <div class="settingsNavSpacer"></div>
                     <button class="settingsNavItem" rSc="settingsTabAbout">Sobre</button>
                     <button class="settingsNavItem" rSc="settingsTabUpdate" id="settingsNavUpdate">Atualizações</button>
@@ -321,6 +322,34 @@
                 <div class="settingsFileSelDesc">Todos os arquivos do jogo e instalações Java locais serão armazenados
                     no diretório de dados.<br>Capturas de tela e salvamentos globais são armazenados na pasta da
                     instância para a configuração do servidor correspondente.</div>
+            </div>
+        </div>
+        <div id="settingsTabMusic" class="settingsTab" style="display: none;">
+            <div class="settingsTabHeader">
+                <span class="settingsTabHeaderText">Música</span>
+                <span class="settingsTabHeaderDesc">Configure o volume da música do Launcher</span>
+            </div>
+            <div class="settingsFieldContainer">
+                <div class="settingsFieldLeft">
+                    <span class="settingsFieldTitle">Tocar musica ao iniciar o Launcher.</span>
+                </div>
+                <div class="settingsFieldRight">
+                    <label class="toggleSwitch">
+                        <input type="checkbox" cValue="Play">
+                        <span class="toggleSwitchSlider"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="settingsMusicVolumeContentItem">
+                <span class="settingsMusicVolumeHeader">Volume da Música</span>
+                <div class="settingsMusicVolumeActionContainer">
+                    <div id="settingsMusicVolumeRange" class="rangeSlider" cValue="Volume" min="0" max="101" value="100"
+                        step="0.5">
+                        <div class="rangeSliderBar"></div>
+                        <div class="rangeSliderTrack"></div>
+                    </div>
+                    <span id="settingsMusicVolumeLabel" class="settingsMusicVolumeLabel">100%</span>
+                </div>
             </div>
         </div>
         <div id="settingsTabAbout" class="settingsTab" style="display: none;">

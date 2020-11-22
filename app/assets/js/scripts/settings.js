@@ -1196,6 +1196,21 @@ function prepareJavaTab() {
 }
 
 /**
+ * Music Tab
+ */
+
+const settingsMusicVolumeRange = document.getElementById('settingsMusicVolumeRange')
+const settingsMusicVolumeLabel = document.getElementById('settingsMusicVolumeLabel')
+
+settingsMusicVolumeRange.onchange = (e) => {
+    const sMinV = Number(settingsMusicVolumeRange.getAttribute('value'))
+
+    const youtubeAudio =  document.getElementById('youtube')
+    youtubeAudio.volume = (sMinV / 100)
+    settingsMusicVolumeLabel.innerHTML = sMinV.toFixed(1) + '%'
+}
+
+/**
  * About Tab
  */
 
@@ -1301,8 +1316,6 @@ const settingsUpdateChangelogTitle = settingsTabUpdate.getElementsByClassName('s
 const settingsUpdateChangelogText = settingsTabUpdate.getElementsByClassName('settingsChangelogText')[0]
 const settingsUpdateChangelogCont = settingsTabUpdate.getElementsByClassName('settingsChangelogContainer')[0]
 const settingsUpdateActionButton = document.getElementById('settingsUpdateActionButton')
-const progressBar = document.getElementById('progress-bar')
-const progressBarInner = document.getElementById('progress-bar-inner')
 
 /**
  * Update the properties of the update action button.
@@ -1313,22 +1326,10 @@ const progressBarInner = document.getElementById('progress-bar-inner')
  */
 function settingsUpdateButtonStatus(text, disabled = false, handler = null) {
     settingsUpdateActionButton.innerHTML = text
-    if (text == 'Baixando..') {
-        progressBar.style.display = 'block'
-    } else {
-        progressBar.style.display = 'none'
-    }
     settingsUpdateActionButton.disabled = disabled
     if (handler != null) {
         settingsUpdateActionButton.onclick = handler
     }
-}
-
-/**
- * Update progress bar 
- **/
-function settingsUpdateProgressBar(progress) {
-    progressBarInner.style.width = progress + '%'
 }
 
 /**

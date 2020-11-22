@@ -8,7 +8,6 @@ const path = require('path')
 const semver = require('semver')
 const url = require('url')
 let settings = require('./app/config/settings.json')
-const { event } = require('jquery')
 
 // Setup auto updater.
 function initAutoUpdater(event, data) {
@@ -41,9 +40,9 @@ function initAutoUpdater(event, data) {
         event.sender.send('autoUpdateNotification', 'update-not-available', info)
     })
 
-    autoUpdater.on('download-progress', (progressObj) => {
-        console.log(progressObj)
-        event.sender.send('download-progress', progressObj.percent)
+    autoUpdater.on('progress', (ev, progressObj) => {
+        console.log(ev, progressObj)
+        //event.sender.send('download-progress', progressObj.percent)
     })
 
     autoUpdater.on('checking-for-update', () => {
