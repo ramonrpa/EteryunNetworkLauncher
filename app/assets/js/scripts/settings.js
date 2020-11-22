@@ -1204,9 +1204,10 @@ const settingsMusicVolumeLabel = document.getElementById('settingsMusicVolumeLab
 
 settingsMusicVolumeRange.onchange = (e) => {
     const sMinV = Number(settingsMusicVolumeRange.getAttribute('value'))
+    let volume = (sMinV / 100)
 
-    const youtubeAudio =  document.getElementById('youtube')
-    youtubeAudio.volume = (sMinV / 100)
+    const youtubeAudio = document.getElementById('youtube')
+    youtubeAudio.volume = volume > 1 ? 1 : volume
     settingsMusicVolumeLabel.innerHTML = sMinV.toFixed(1) + '%'
 }
 

@@ -123,7 +123,8 @@ function showMainUI(data) {
         getAudioUrl('hBkcwy-iWt8').then(url => {
             const youtubeAudio = document.getElementById('youtube')
             youtubeAudio.src = url
-            youtubeAudio.volume = (ConfigManager.getVolume() / 100)
+            youtubeAudio.volume = (ConfigManager.getVolume() / 100) > 1 ? 1 : (ConfigManager.getVolume() / 100)
+            youtubeAudio.currentTime = getRandomStart()
         }).catch(error => {
             console.log(error)
         })
@@ -132,6 +133,11 @@ function showMainUI(data) {
     initNews().then(() => {
         $('#newsContainer *').attr('tabindex', '-1')
     })
+}
+
+function getRandomStart() {
+    let times = [0, 332, 571, 806, 1023, 1329, 1535, 1784, 1993, 2196, 2430, 2676, 3216]
+    return times[[Math.floor((Math.random() * times.length))]]
 }
 
 function showFatalStartupError() {
