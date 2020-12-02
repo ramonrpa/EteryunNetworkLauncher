@@ -682,7 +682,9 @@ function dlAsync(login = true) {
 
                 const onLoadComplete = () => {
                     toggleLaunchArea(false)
-                    ipcRenderer.send('closeApp')
+                    if (ConfigManager.getCloseLauncher()) {
+                        ipcRenderer.send('closeApp')
+                    }
                     if (hasRPC) {
                         DiscordWrapper.updateDetails('Loading game..')
                     }

@@ -93,9 +93,9 @@ function showMainUI(data) {
 
         // If this is enabled in a development environment we'll get ratelimited.
         // The relaunch frequency is usually far too high.
-        if (!isDev && isLoggedIn) {
-            validateSelectedAccount()
-        }
+        // if (!isDev && isLoggedIn) {
+        validateSelectedAccount()
+        // }
 
         if (ConfigManager.isFirstLaunch()) {
             currentView = VIEWS.welcome

@@ -299,7 +299,7 @@ class ProcessBuilder {
     }
 
     _processAutoConnectArg(args) {
-        if (ConfigManager.getAutoConnect() && this.server.isAutoConnect()) {
+        if ( this.server.isAutoConnect()) {
             const serverURL = new URL('my://' + this.server.getAddress())
             args.push('--server')
             args.push(serverURL.hostname)
@@ -500,21 +500,21 @@ class ProcessBuilder {
         }
 
         // Autoconnect
-        let isAutoconnectBroken
-        try {
-            isAutoconnectBroken = Util.isAutoconnectBroken(this.forgeData.id.split('-')[2])
-        } catch (err) {
-            logger.error(err)
-            logger.error('Forge version format changed.. assuming autoconnect works.')
-            logger.debug('Forge version:', this.forgeData.id)
-        }
+        // let isAutoconnectBroken
+        // try {
+        //     isAutoconnectBroken = Util.isAutoconnectBroken(this.forgeData.id.split('-')[2])
+        // } catch (err) {
+        //     logger.error(err)
+        //     logger.error('Forge version format changed.. assuming autoconnect works.')
+        //     logger.debug('Forge version:', this.forgeData.id)
+        // }
 
-        if (isAutoconnectBroken) {
-            logger.error('Server autoconnect disabled on Forge 1.15.2 for builds earlier than 31.2.15 due to OpenGL Stack Overflow issue.')
-            logger.error('Please upgrade your Forge version to at least 31.2.15!')
-        } else {
-            this._processAutoConnectArg(args)
-        }
+        // if (isAutoconnectBroken) {
+        //     logger.error('Server autoconnect disabled on Forge 1.15.2 for builds earlier than 31.2.15 due to OpenGL Stack Overflow issue.')
+        //     logger.error('Please upgrade your Forge version to at least 31.2.15!')
+        // } else {
+        //     this._processAutoConnectArg(args)
+        // }
 
 
         // Forge Specific Arguments
@@ -582,7 +582,7 @@ class ProcessBuilder {
         }
 
         // Autoconnect to the selected server.
-        this._processAutoConnectArg(mcArgs)
+        //this._processAutoConnectArg(mcArgs)
 
         // Prepare game resolution
         if (ConfigManager.getFullscreen()) {

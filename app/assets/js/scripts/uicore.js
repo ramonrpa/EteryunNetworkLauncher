@@ -5,13 +5,13 @@
  * modules, excluding dependencies.
  */
 // Requirements
-const $                                      = require('jquery')
-const {ipcRenderer, remote, shell, webFrame} = require('electron')
-const isDev                                  = require('./assets/js/isdev')
-const LoggerUtil                             = require('./assets/js/loggerutil')
+const $ = require('jquery')
+const { ipcRenderer, remote, shell, webFrame } = require('electron')
+const isDev = require('./assets/js/isdev')
+const LoggerUtil = require('./assets/js/loggerutil')
 
-const loggerUICore             = LoggerUtil('%c[UICore]', 'color: #000668; font-weight: bold')
-const loggerAutoUpdater        = LoggerUtil('%c[AutoUpdater]', 'color: #000668; font-weight: bold')
+const loggerUICore = LoggerUtil('%c[UICore]', 'color: #000668; font-weight: bold')
+const loggerAutoUpdater = LoggerUtil('%c[AutoUpdater]', 'color: #000668; font-weight: bold')
 const loggerAutoUpdaterSuccess = LoggerUtil('%c[AutoUpdater]', 'color: #209b07; font-weight: bold')
 
 // Log deprecation and process warnings.
@@ -37,28 +37,37 @@ webFrame.setVisualZoomLevelLimits(1, 1)
 
 // Initialize auto updates in production environments.
 let updateCheckListener
-if(!isDev){
+if (!isDev) {
+
+    ipcRenderer.on('download-progress', (event, progress) => {
+        console.log(progress)
+        if (progress.percent) {
+            remote.getCurrentWindow().setProgressBar(progress.percent / 100)
+        } else {
+            remote.getCurrentWindow().setProgressBar(Math.random() * 100)
+        }
+    })
 
     ipcRenderer.on('autoUpdateNotification', (event, arg, info) => {
-        switch(arg){
+        switch (arg) {
             case 'checking-for-update':
                 loggerAutoUpdater.log('Checking for update..')
                 settingsUpdateButtonStatus('Checking for Updates..', true)
                 break
             case 'update-available':
                 loggerAutoUpdaterSuccess.log('New update available', info.version)
-                
-                if(process.platform === 'darwin'){
+
+                if (process.platform === 'darwin') {
                     info.darwindownload = `https://github.com/dscalzi/HeliosLauncher/releases/download/v${info.version}/helioslauncher-setup-${info.version}.dmg`
                     showUpdateUI(info)
                 }
-                
+
                 populateSettingsUpdateInformation(info)
                 break
             case 'update-downloaded':
                 loggerAutoUpdaterSuccess.log('Update ' + info.version + ' ready to be installed.')
                 settingsUpdateButtonStatus('Instale agora', false, () => {
-                    if(!isDev){
+                    if (!isDev) {
                         ipcRenderer.send('autoUpdateAction', 'installUpdateNow')
                     }
                 })
@@ -75,10 +84,10 @@ if(!isDev){
                 ipcRenderer.send('autoUpdateAction', 'checkForUpdate')
                 break
             case 'realerror':
-                if(info != null && info.code != null){
-                    if(info.code === 'ERR_UPDATER_INVALID_RELEASE_FEED'){
+                if (info != null && info.code != null) {
+                    if (info.code === 'ERR_UPDATER_INVALID_RELEASE_FEED') {
                         loggerAutoUpdater.log('No suitable releases found.')
-                    } else if(info.code === 'ERR_XML_MISSED_ELEMENT'){
+                    } else if (info.code === 'ERR_XML_MISSED_ELEMENT') {
                         loggerAutoUpdater.log('No releases found.')
                     } else {
                         loggerAutoUpdater.error('Error during update check..', info)
@@ -101,17 +110,17 @@ if(!isDev){
  * 
  * @param {boolean} val The new allow prerelease value.
  */
-function changeAllowPrerelease(val){
+function changeAllowPrerelease(val) {
     ipcRenderer.send('autoUpdateAction', 'allowPrereleaseChange', val)
 }
 
-function showUpdateUI(info){
+function showUpdateUI(info) {
     //TODO Make this message a bit more informative `${info.version}`
     document.getElementById('image_seal_container').setAttribute('update', true)
     document.getElementById('image_seal_container').onclick = () => {
         setOverlayContent('Atualização disponível', 'Uma nova atualização para o lançador está disponível. Você gostaria de instalar agora?', 'Instalar', 'Mais tarde')
         setOverlayHandler(() => {
-            if(!isDev){
+            if (!isDev) {
                 ipcRenderer.send('autoUpdateAction', 'installUpdateNow')
             } else {
                 console.error('Cannot install updates in development environment.')
@@ -134,7 +143,7 @@ $(function(){
 })*/
 
 document.addEventListener('readystatechange', function () {
-    if (document.readyState === 'interactive'){
+    if (document.readyState === 'interactive') {
         loggerUICore.log('UICore Initializing..')
 
         // Bind close button.
@@ -149,7 +158,7 @@ document.addEventListener('readystatechange', function () {
         Array.from(document.getElementsByClassName('fRb')).map((val) => {
             val.addEventListener('click', e => {
                 const window = remote.getCurrentWindow()
-                if(window.isMaximized()){
+                if (window.isMaximized()) {
                     window.unmaximize()
                 } else {
                     window.maximize()
@@ -174,7 +183,7 @@ document.addEventListener('readystatechange', function () {
             })
         })
 
-    } else if(document.readyState === 'complete'){
+    } else if (document.readyState === 'complete') {
 
         //266.01
         //170.8
@@ -188,7 +197,7 @@ document.addEventListener('readystatechange', function () {
         document.getElementById('launch_progress').style.width = 170.8
         document.getElementById('launch_details_right').style.maxWidth = 170.8
         document.getElementById('launch_progress_label').style.width = 53.21
-        
+
     }
 
 }, false)
@@ -196,7 +205,7 @@ document.addEventListener('readystatechange', function () {
 /**
  * Open web links in the user's default browser.
  */
-$(document).on('click', 'a[href^="http"]', function(event) {
+$(document).on('click', 'a[href^="http"]', function (event) {
     event.preventDefault()
     shell.openExternal(this.href)
 })
@@ -207,7 +216,7 @@ $(document).on('click', 'a[href^="http"]', function(event) {
  * DevTools, for example the chrome debugger in VS Code. 
  */
 document.addEventListener('keydown', function (e) {
-    if((e.key === 'I' || e.key === 'i') && e.ctrlKey && e.shiftKey){
+    if ((e.key === 'I' || e.key === 'i') && e.ctrlKey && e.shiftKey) {
         let window = remote.getCurrentWindow()
         window.toggleDevTools()
     }

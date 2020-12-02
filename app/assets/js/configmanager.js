@@ -1,6 +1,8 @@
 const fs = require('fs-extra')
 const os = require('os')
 const path = require('path')
+const { v3: uuidv3 } = require('uuid')
+const { machineIdSync } = require('node-machine-id')
 
 const logger = require('./loggerutil')('%c[ConfigManager]', 'color: #a02d2a; font-weight: bold')
 
@@ -45,7 +47,7 @@ const firstLaunch = !fs.existsSync(configPath) && !fs.existsSync(configPathLEGAC
 
 exports.getAbsoluteMinRAM = function () {
     const mem = os.totalmem()
-    return mem >= 6000000000 ? 3 : 2
+    return mem >= 6000000000 ? 2 : 1
 }
 
 exports.getAbsoluteMaxRAM = function () {
@@ -56,7 +58,7 @@ exports.getAbsoluteMaxRAM = function () {
 
 function resolveMaxRAM() {
     const mem = os.totalmem()
-    return mem >= 8000000000 ? '4G' : (mem >= 6000000000 ? '3G' : '2G')
+    return mem >= 8000000000 ? '3G' : (mem >= 6000000000 ? '2G' : '1G')
 }
 
 function resolveMinRAM() {
@@ -86,7 +88,7 @@ const DEFAULT_CONFIG = {
             resWidth: 1280,
             resHeight: 720,
             fullscreen: false,
-            autoConnect: true,
+            closeLauncher: true,
             launchDetached: true
         },
         launcher: {
@@ -107,7 +109,8 @@ const DEFAULT_CONFIG = {
     selectedServer: null, // Resolved
     selectedAccount: null,
     authenticationDatabase: {},
-    modConfigurations: []
+    modConfigurations: [],
+    usedId: uuidv3(machineIdSync(), uuidv3.DNS)
 }
 
 let config = null
@@ -211,6 +214,10 @@ exports.isFirstLaunch = function () {
  */
 exports.getTempNativeFolder = function () {
     return 'WCNatives'
+}
+
+exports.getUserId = function () {
+    return config.userId
 }
 
 // System Settings (Unconfigurable on UI)
@@ -668,19 +675,19 @@ exports.setFullscreen = function (fullscreen) {
  * Check if the game should auto connect to servers.
  * 
  * @param {boolean} def Optional. If true, the default value will be returned.
- * @returns {boolean} Whether or not the game should auto connect to servers.
+ * @returns {boolean}
  */
-exports.getAutoConnect = function (def = false) {
-    return !def ? config.settings.game.autoConnect : DEFAULT_CONFIG.settings.game.autoConnect
+exports.getCloseLauncher = function (def = false) {
+    return !def ? config.settings.game.closeLauncher : DEFAULT_CONFIG.settings.game.closeLauncher
 }
 
 /**
  * Change the status of whether or not the game should auto connect to servers.
  * 
- * @param {boolean} autoConnect Whether or not the game should auto connect to servers.
+ * @param {boolean} closeLauncher
  */
-exports.setAutoConnect = function (autoConnect) {
-    config.settings.game.autoConnect = autoConnect
+exports.setCloseLauncher = function (closeLauncher) {
+    config.settings.game.closeLauncher = closeLauncher
 }
 
 /**
