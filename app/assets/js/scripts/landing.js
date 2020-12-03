@@ -633,7 +633,7 @@ function dlAsync(login = true) {
         } else if (m.context === 'error') {
             switch (m.data) {
                 case 'download':
-                    loggerLaunchSuite.error('Error while downloading:', m.error)
+                    loggerLaunchSuite.error('Error while downloading:', m)
 
                     if (m.error.code === 'ENOENT') {
                         showLaunchFailure(

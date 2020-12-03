@@ -1221,7 +1221,7 @@ class AssetGuard extends EventEmitter {
                 //This download will never be tracked as it's essential and trivial.
                 console.log('Preparing download of ' + version + ' assets.')
                 fs.ensureDirSync(versionPath)
-                const stream = request(url, { timeout: 1500 }).pipe(fs.createWriteStream(versionFile))
+                const stream = request(url, { timeout: 1200000 }).pipe(fs.createWriteStream(versionFile))
                 stream.on('finish', () => {
                     resolve(JSON.parse(fs.readFileSync(versionFile)))
                 })
@@ -1303,7 +1303,7 @@ class AssetGuard extends EventEmitter {
             if (!fs.existsSync(assetIndexLoc) || force) {
                 console.log('Downloading ' + versionData.id + ' asset index.')
                 fs.ensureDirSync(indexPath)
-                const stream = request(assetIndex.url, { timeout: 1500 }).pipe(fs.createWriteStream(assetIndexLoc))
+                const stream = request(assetIndex.url, { timeout: 1200000 }).pipe(fs.createWriteStream(assetIndexLoc))
                 stream.on('finish', () => {
                     data = JSON.parse(fs.readFileSync(assetIndexLoc, 'utf-8'))
                     self._assetChainValidateAssets(versionData, data).then(() => {
@@ -1765,7 +1765,7 @@ class AssetGuard extends EventEmitter {
 
                 fs.ensureDirSync(path.join(asset.to, '..'))
 
-                let req = request(asset.from, { timeout: 1500 })
+                let req = request(asset.from, { timeout: 1200000 })
                 req.pause()
 
                 req.on('response', (resp) => {
