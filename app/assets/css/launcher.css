@@ -550,7 +550,7 @@ button {
 /* Header on login view. */
 #loginSubheader {
     font-family: 'Avenir Medium';
-    margin-bottom: 25px;
+    margin-bottom: 10px;
     font-size: 12px;
     letter-spacing: 1px;
     font-weight: bold;
@@ -859,6 +859,33 @@ button {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+#loginMSButton {
+    border-color: transparent;
+    background-color: transparent;
+    cursor: pointer;
+    font-family: 'Avenir Medium';
+    font-size: 12px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 1) !important;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.svg-logo {
+    fill: #fff;
+    width: 60px;
+    height: 20px;
+    margin-left: 5px;
+} 
+
+.svg-logo title {
+    font-family: 'Avenir Medium';
+    font-size: 12px;
+    font-weight: bold;
 }
 
 /* Add spacing between register anchor and disclaimer. */

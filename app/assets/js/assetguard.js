@@ -276,7 +276,7 @@ class JavaGuard extends EventEmitter {
      * 
      * @returns {Promise.<OpenJDKData>} Promise which resolved to an object containing the JRE download data.
      */
-    static _latestOpenJDK(major = '8') {
+    static _latestOpenJDK(major = '9') {
 
         if (process.platform === 'darwin') {
             return this._latestCorretto(major)
